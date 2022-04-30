@@ -1,0 +1,31 @@
+{
+  "name": "gennieparser",
+  "version": "1.0.0",
+  "description": "html parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wramirez09/GennieParser.git"
+  },
+  "keywords": [
+    "wr"
+  ],
+  "author": "will ramirez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wramirez09/GennieParser/issues"
+  },
+  "homepage": "https://github.com/wramirez09/GennieParser#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.18.1",
+    "parse-address": "^1.1.2",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
