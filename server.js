@@ -5,10 +5,11 @@ const port = 3000
 const DataApp = require('./index');
 
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
 
-    let data = DataApp().getData();
-    res.json(data);
+    let data = await DataApp().loadData();
+    if(data) res.json(data);
+    
 
 })
 

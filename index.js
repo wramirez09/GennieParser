@@ -1,3 +1,4 @@
+const { default: axios } = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const pathToDataFile = "data/data.html";
@@ -6,13 +7,24 @@ const parseContactInfo = require("./modules/ParseContactInfo");
 
 class App {
 
-    constructor(cheerio, pathToDataFile, parseContactInfo){
+    constructor(cheerio, pathToDataFile){
         this.pathToDataFile = pathToDataFile;
         this.cheerio = cheerio;
         this.$ = this.cheerio.load(fs.readFileSync(pathToDataFile));
         this.parsedData = [];
         this.rows = this.$(".div-table-row"); 
-        
+        this.url = "https://www.ginniemae.gov/issuers/issuer_tools/Pages/aidcreport.aspx?cat=Single-Family";
+    }
+
+    async loadData(){
+
+        return await axios.get(this.url).then((resp)=>{
+            // re assign remote data 
+            this.$ = this.cheerio.load(resp.data) ? this.cheerio.load(resp.data) : this.$;
+            let data = this.getData();
+            return data
+        });
+
     }
 
     getData() {
@@ -36,7 +48,6 @@ class App {
             }
             this.parsedData.push(payload);
         }
-        console.log(this.parsedData);
         return this.parsedData
 
     }
