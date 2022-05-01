@@ -3,24 +3,25 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const pathToDataFile = "data/data.html";
 const parseContactInfo = require("./modules/ParseContactInfo");
-
+const ginnieURl = "https://www.ginniemae.gov/issuers/issuer_tools/Pages/aidcreport.aspx?cat=Single-Family";
 
 class App {
 
-    constructor(cheerio, pathToDataFile){
+    constructor(cheerio, pathToDataFile, parseContactInfo, ginnieURl){
         this.pathToDataFile = pathToDataFile;
         this.cheerio = cheerio;
         this.$ = this.cheerio.load(fs.readFileSync(pathToDataFile));
         this.parsedData = [];
         this.rows = this.$(".div-table-row"); 
-        this.url = "https://www.ginniemae.gov/issuers/issuer_tools/Pages/aidcreport.aspx?cat=Single-Family";
+        this.url = ginnieURl;
+        this.parseContactInfo = parseContactInfo;
     }
 
     async loadData(){
 
         return await axios.get(this.url).then((resp)=>{
             // re assign remote data 
-            this.$ = this.cheerio.load(resp.data) ? this.cheerio.load(resp.data) : this.$;
+            this.$ = this.cheerio.load(resp.data);
             let data = this.getData();
             return data
         });
@@ -38,7 +39,7 @@ class App {
             const bankName = this.$( bankNameRowString ).text().trim();
             
             const fullContactInfo = this.$(element.split("</div>")[1]).text().trim();
-            const contactParsed = this.parseContactInfo = new parseContactInfo(fullContactInfo).parse();
+            const contactParsed = new parseContactInfo(fullContactInfo).parse();
             const bankId = this.$(element.split("</div>")[2]).text().trim();
 
             let payload = {
@@ -47,11 +48,21 @@ class App {
                 contactInfo:contactParsed
             }
             this.parsedData.push(payload);
+            this.getById();
         }
         return this.parsedData
 
     }
+
+    getById(id){
+       return this.parsedData.filter((bank)=>{
+           console.log(id, bank.bankId)
+            if(bank.bankId == id) return bank
+        })
+    }
 }
 
-module.exports = () => new App(cheerio, pathToDataFile, parseContactInfo) ;
+module.exports = () => new App(cheerio, pathToDataFile, parseContactInfo, ginnieURl);
+
+
 
