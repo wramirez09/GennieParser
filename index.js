@@ -56,7 +56,6 @@ class App {
 
     getById(id){
        return this.parsedData.filter((bank)=>{
-           console.log(id, bank.bankId)
             if(bank.bankId == id) return bank
         })
     }
