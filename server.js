@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const port = 3000;
 const cors = require('cors')
 
 const DataApp = require("./index");
@@ -20,4 +19,4 @@ app.get("/:id", async (req, res) => {
   if (bank) res.json(bank);
 });
 
-app.listen(process.env.PORT || 5000)
+app.listen(process.env.PORT || 8000)
