@@ -10,9 +10,9 @@ class App {
     constructor(cheerio, pathToDataFile, parseContactInfo, ginnieURl){
         this.pathToDataFile = pathToDataFile;
         this.cheerio = cheerio;
-        this.$ = "";
+        this.$ = this.cheerio.load(fs.readFileSync(pathToDataFile));
         this.parsedData = [];
-
+        this.rows = this.$(".div-table-row"); 
         this.url = ginnieURl;
         this.parseContactInfo = parseContactInfo;
     }
@@ -22,7 +22,6 @@ class App {
         return await axios.get(this.url).then((resp)=>{
             // re assign remote data 
             this.$ = this.cheerio.load(resp.data);
-            this.rows = this.$(".div-table-row"); 
             let data = this.getData();
             return data
         });
@@ -51,7 +50,7 @@ class App {
                 contactInfo:contactParsed
             }
             this.parsedData.push(payload);
-            console.log(this.parsedData.length)
+            console.log(bankName)
             this.getById();
         }
         return this.parsedData
