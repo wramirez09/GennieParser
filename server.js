@@ -1,17 +1,11 @@
 const express = require("express");
 const app = express();
-
+const cors = require('cors');
 
 const DataApp = require("./index");
 const dataApp = DataApp();
 
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", '*');
-//   res.header("Access-Control-Allow-Credentials", true);
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-//   res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
-//   next();
-// });
+app.use(cors());
 
 app.get("/", async (req, res) => {
   let data = await dataApp.loadData();
@@ -21,6 +15,7 @@ app.get("/", async (req, res) => {
 app.get("/:id", async (req, res) => {
   
   let bank = dataApp.getById(req.params.id);
+    console.log(bank)
   if (bank) res.json(bank);
 });
 
