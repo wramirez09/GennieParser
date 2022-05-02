@@ -17,6 +17,4 @@ app.get("/:id", async (req, res) => {
   if (bank) res.json(bank);
 });
 
-app.listen(port, () => {
-  console.log(`listening to port:${port}`);
-});
+app.listen(process.env.PORT || 5000)
