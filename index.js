@@ -45,7 +45,7 @@ class App {
             const bankId = this.$(element.split("</div>")[2]).text().trim();
 
             let payload = {
-                bankId,
+                id: bankId,
                 bankName,
                 contactInfo:contactParsed
             }
