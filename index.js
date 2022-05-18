@@ -50,8 +50,7 @@ class App {
                 contactInfo:contactParsed
             }
             this.parsedData.push(payload);
-            console.log(bankName)
-            this.getById();
+            console.log(bankName);
         }
         return this.parsedData
 
